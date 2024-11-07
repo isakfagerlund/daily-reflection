@@ -1,34 +1,50 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { Tabs } from "expo-router";
+import React from "react";
+import { BlurView } from "expo-blur";
+import { StyleSheet, Platform } from "react-native";
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { useTheme } from "@shopify/restyle";
+import { Theme } from "@/constants/theme";
+import { House, UserRound } from "lucide-react-native";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const theme = useTheme<Theme>();
+  const { primaryColor, grey } = theme.colors;
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: primaryColor,
         headerShown: false,
-      }}>
+        tabBarStyle: {
+          position: "absolute",
+          marginBottom: Platform.OS === "web" ? 10 : undefined,
+        },
+        tabBarBackground: () =>
+          Platform.OS !== "android" ? (
+            <BlurView
+              tint="light"
+              intensity={20}
+              style={StyleSheet.absoluteFill}
+            />
+          ) : undefined,
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+          title: "Home",
+          tabBarIcon: ({ focused }) => (
+            <House color={focused ? primaryColor : grey} />
           ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="profile"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+          title: "Profile",
+          tabBarIcon: ({ focused }) => (
+            <UserRound color={focused ? primaryColor : grey} />
           ),
         }}
       />

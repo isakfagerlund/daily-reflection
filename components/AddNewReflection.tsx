@@ -17,35 +17,17 @@ const Button = createBox<Theme, React.ComponentProps<typeof RNButton>>(
 const Text = createText<Theme>();
 const Box = createBox<Theme>();
 
-export const AddNewReflection = () => {
-  const [currentReflection, setCurrentReflection] = useState("");
-  const [reflections, setReflections] = useState<string[]>([
-    "Some old reflection",
-  ]);
-
-  const handleSubmit = () => {
-    let tempCurrentReflections = reflections;
-    tempCurrentReflections.push(currentReflection);
-    setReflections(tempCurrentReflections);
-    setCurrentReflection("");
-  };
+export const AddNewReflection = ({
+  handleSubmit,
+  reflection,
+}: {
+  handleSubmit: (currentReflection: string) => void;
+  reflection: string;
+}) => {
+  const [currentReflection, setCurrentReflection] = useState(reflection);
 
   return (
     <React.Fragment>
-      <Box
-        minHeight={200}
-        alignItems="center"
-        borderRadius={8}
-        borderWidth={2}
-        width="100%"
-        padding="s"
-      >
-        {reflections.map((r, i) => (
-          <Text key={r} fontSize={12}>
-            {i + 1}: {r}
-          </Text>
-        ))}
-      </Box>
       <Box paddingVertical="xl" padding="xl" gap="m">
         <TextInput
           onChangeText={(text) => setCurrentReflection(text)}
@@ -56,7 +38,9 @@ export const AddNewReflection = () => {
           value={currentReflection}
         />
         <Button
-          onPress={handleSubmit}
+          onPress={() => {
+            handleSubmit(currentReflection);
+          }}
           borderWidth={2}
           borderRadius={100}
           padding="s"

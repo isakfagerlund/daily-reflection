@@ -19,13 +19,15 @@ const Button = createBox<Theme, React.ComponentProps<typeof RNButton>>(
 const Text = createText<Theme>();
 const Box = createBox<Theme>();
 
-export const AddNewReflection = () => {
+export const AddNewReflection = ({
+  handleSubmit,
+  reflection,
+}: {
+  handleSubmit: (currentReflection: string) => void;
+  reflection: string;
+}) => {
   const sheet = useRef<TrueSheet>(null);
-
-  const [currentReflection, setCurrentReflection] = useState("");
-  const [reflections, setReflections] = useState<string[]>([
-    "Some old reflection",
-  ]);
+  const [currentReflection, setCurrentReflection] = useState(reflection);
 
   // Present the sheet ✅
   const present = async () => {
@@ -39,41 +41,27 @@ export const AddNewReflection = () => {
     console.log("Bye bye 👋");
   };
 
-  const handleSubmit = () => {
-    let tempCurrentReflections = reflections;
-    tempCurrentReflections.push(currentReflection);
-    setReflections(tempCurrentReflections);
-    setCurrentReflection("");
-    dismiss();
-  };
-
   return (
     <React.Fragment>
-      <Box
-        minHeight={200}
-        alignItems="center"
-        borderRadius={8}
-        borderWidth={2}
-        width="100%"
-        padding="s"
-      >
-        {reflections.map((r, i) => (
-          <Text key={r} fontSize={12}>
-            {i + 1}: {r}
-          </Text>
-        ))}
-      </Box>
       <Button
         onPress={present}
-        borderWidth={2}
-        borderRadius={8}
+        borderRadius={12}
         padding="s"
         alignItems="center"
+        width={50}
+        height={50}
+        backgroundColor="secondaryColor"
+        justifyContent="center"
       >
         <PlusIcon />
       </Button>
 
-      <TrueSheet ref={sheet} sizes={["auto", "large"]} cornerRadius={24}>
+      <TrueSheet
+        blurTint="prominent"
+        ref={sheet}
+        sizes={["auto", "large"]}
+        cornerRadius={24}
+      >
         <Box paddingVertical="xl" padding="xl" gap="m">
           <TextInput
             onChangeText={(text) => setCurrentReflection(text)}
@@ -81,10 +69,14 @@ export const AddNewReflection = () => {
             borderWidth={2}
             width="100%"
             padding="s"
+            multiline={true}
             value={currentReflection}
           />
           <Button
-            onPress={handleSubmit}
+            onPress={() => {
+              handleSubmit(currentReflection);
+              dismiss();
+            }}
             borderWidth={2}
             borderRadius={100}
             padding="s"

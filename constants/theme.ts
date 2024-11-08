@@ -11,13 +11,17 @@ const palette = {
 
   black: "#0B0B0B",
   white: "#F0F2F3",
+
+  mainBlue: "#1E40AF",
+  secondaryColor: "#D9D9D9",
 };
 
 const theme = createTheme({
   colors: {
-    mainBackground: palette.white,
+    mainBackground: palette.mainBlue,
     cardPrimaryBackground: palette.purplePrimary,
     primaryColor: "#1E40AF",
+    secondaryColor: palette.secondaryColor,
     grey: "#8F8F8F",
   },
   spacing: {
@@ -30,7 +34,7 @@ const theme = createTheme({
   textVariants: {
     header: {
       fontWeight: "bold",
-      fontSize: 34,
+      fontSize: 36,
     },
     body: {
       fontSize: 16,
@@ -39,6 +43,10 @@ const theme = createTheme({
     defaults: {
       fontSize: 18,
     },
+  },
+  breakpoints: {
+    phone: 0,
+    tablet: 768,
   },
 });
 

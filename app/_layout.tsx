@@ -28,7 +28,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider theme={theme}>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen
           name="new"
           options={{ headerShown: false, presentation: "formSheet" }}

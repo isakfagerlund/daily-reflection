@@ -36,6 +36,8 @@ export const NewReflectionContent = ({
         padding="s"
         multiline={true}
         value={textInput}
+        textAlignVertical="top"
+        height={150}
       />
       <Button
         onPress={() => {

@@ -1,4 +1,4 @@
-import { Theme } from "@/constants/theme";
+import theme, { Theme } from "@/constants/theme";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { createBox } from "@shopify/restyle";
 import { PlusIcon } from "lucide-react-native";
@@ -38,7 +38,7 @@ export const AddNewReflection = ({
         backgroundColor="secondaryColor"
         justifyContent="center"
       >
-        <PlusIcon />
+        <PlusIcon color={theme.colors.primaryColor} />
       </Button>
 
       <TrueSheet

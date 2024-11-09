@@ -15,8 +15,6 @@ export const Container = ({ children }: ContainerProps) => {
       flex={1}
       justifyContent="center"
       alignItems="center"
-      paddingVertical={`${Platform.OS === "web" ? "s" : "xl2"}`}
-      paddingHorizontal="m"
       backgroundColor="mainBackground"
     >
       <Box width="100%" maxWidth={500} flex={1}>

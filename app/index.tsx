@@ -2,14 +2,15 @@ import { Container } from "@/components/Container";
 import { createBox, createText } from "@shopify/restyle";
 import { Theme } from "@/constants/theme";
 import { AddNewReflection } from "@/components/AddNewReflection";
-import { useState } from "react";
 import { Reflection } from "@/components/Reflection";
+import { useAtom } from "jotai";
+import { currentReflectionInput } from "@/atoms/atoms";
 
 const Box = createBox<Theme>();
 const Text = createText<Theme>();
 
 export default function HomeScreen() {
-  const [reflection, setReflection] = useState<string>("Some old reflection");
+  const [, setReflection] = useAtom(currentReflectionInput);
 
   const handleSubmit = (currentReflection: string) => {
     setReflection(currentReflection);
@@ -22,9 +23,9 @@ export default function HomeScreen() {
           <Text style={{ color: "white" }} variant="header">
             TODAY
           </Text>
-          <Reflection reflection={reflection} />
+          <Reflection />
         </Box>
-        <AddNewReflection reflection={reflection} handleSubmit={handleSubmit} />
+        <AddNewReflection handleSubmit={handleSubmit} />
       </Box>
     </Container>
   );

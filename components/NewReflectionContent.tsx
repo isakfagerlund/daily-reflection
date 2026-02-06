@@ -7,7 +7,6 @@ import {
 } from "react-native";
 import { useAtom } from "jotai";
 import { currentReflectionInput } from "@/atoms/atoms";
-import { useState } from "react";
 
 const TextInput = createBox<Theme, React.ComponentProps<typeof RNTextInput>>(
   RNTextInput,
@@ -21,25 +20,29 @@ export const NewReflectionContent = ({
 }: {
   handleSubmit: (value: string) => void;
 }) => {
-  const [currentReflection] = useAtom(currentReflectionInput);
-  const [textInput, setTextInput] = useState(currentReflection);
+  const [currentReflection, setCurrentReflection] = useAtom(
+    currentReflectionInput,
+  );
 
   return (
     <Box paddingVertical="xl" padding="xl" gap="m">
       <TextInput
-        onChangeText={(text) => setTextInput(text)}
+        onChangeText={(text) => setCurrentReflection(text)}
         borderRadius={8}
         borderWidth={2}
         width="100%"
         padding="s"
         multiline={true}
-        value={textInput}
+        blurOnSubmit={false}
+        submitBehavior="newline"
+        value={currentReflection}
         textAlignVertical="top"
         height={150}
       />
       <Button
         onPress={() => {
-          handleSubmit(textInput);
+          handleSubmit(currentReflection);
+          setCurrentReflection("");
         }}
         borderWidth={2}
         borderRadius={100}

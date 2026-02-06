@@ -1,5 +1,6 @@
+import { Box, Text } from "@/components/ui";
 import { Theme } from "@/constants/theme";
-import { createBox, createText } from "@shopify/restyle";
+import { createBox } from "@shopify/restyle";
 import {
   TextInput as RNTextInput,
   TouchableOpacity as RNButton,
@@ -11,9 +12,6 @@ import { useState } from "react";
 const TextInput = createBox<Theme, React.ComponentProps<typeof RNTextInput>>(
   RNTextInput,
 );
-const Text = createText<Theme>();
-const Box = createBox<Theme>();
-
 const Button = createBox<Theme, React.ComponentProps<typeof RNButton>>(
   RNButton,
 );

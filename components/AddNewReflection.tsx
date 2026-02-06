@@ -1,11 +1,11 @@
 import React from "react";
-import { NewReflectionContent } from "./NewReflectionContent";
-import { createBox } from "@shopify/restyle";
+import { Box } from "@/components/ui";
 import { Theme } from "@/constants/theme";
+import { createBox } from "@shopify/restyle";
 import { PlusIcon } from "lucide-react-native";
 import { TouchableOpacity as RNButton } from "react-native";
 
-const Box = createBox<Theme>();
+import { NewReflectionContent } from "./NewReflectionContent";
 
 const Button = createBox<Theme, React.ComponentProps<typeof RNButton>>(
   RNButton,

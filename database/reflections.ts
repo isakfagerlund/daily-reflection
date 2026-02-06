@@ -1,13 +1,13 @@
 import { subDays } from "date-fns";
 
-type Reflection = {
+export type Reflection = {
   id: number;
   reflection: string;
   createdAt: Date;
   updatedAt: Date;
 };
 
-export const fakeReflectionDatabase: Reflection[] = [
+const fakeReflectionDatabase: Reflection[] = [
   {
     id: 1,
     reflection:
@@ -44,7 +44,7 @@ export const fakeReflectionDatabase: Reflection[] = [
     updatedAt: subDays(new Date(), 1),
   },
   {
-    id: 5,
+    id: 6,
     reflection: "This is a reflection from today",
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -52,9 +52,20 @@ export const fakeReflectionDatabase: Reflection[] = [
 ];
 
 export const getReflections = async () => {
-  return fakeReflectionDatabase;
+  return [...fakeReflectionDatabase];
+};
+
+export const createReflection = (reflection: string): Reflection => {
+  const now = new Date();
+  return {
+    id: now.getTime(),
+    reflection,
+    createdAt: now,
+    updatedAt: now,
+  };
 };
 
 export const addReflection = async (reflection: Reflection) => {
-  return fakeReflectionDatabase.push(reflection);
+  fakeReflectionDatabase.push(reflection);
+  return reflection;
 };

@@ -1,10 +1,25 @@
 import * as React from 'react';
-import renderer from 'react-test-renderer';
+import renderer, { act } from 'react-test-renderer';
+import * as ReactNative from 'react-native';
 
 import { ThemedText } from '../ThemedText';
 
-it(`renders correctly`, () => {
-  const tree = renderer.create(<ThemedText>Snapshot test!</ThemedText>).toJSON();
+const useColorSchemeSpy = jest.spyOn(ReactNative, 'useColorScheme');
 
-  expect(tree).toMatchSnapshot();
+beforeEach(() => {
+  useColorSchemeSpy.mockReturnValue('light');
+});
+
+it(`renders correctly`, () => {
+  let tree: renderer.ReactTestRenderer | undefined;
+
+  act(() => {
+    tree = renderer.create(<ThemedText>Snapshot test!</ThemedText>);
+  });
+
+  if (!tree) {
+    throw new Error('Expected renderer tree to be created');
+  }
+
+  expect(tree.toJSON()).toMatchSnapshot();
 });

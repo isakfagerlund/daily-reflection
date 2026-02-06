@@ -1,8 +1,5 @@
 import { Container } from "@/components/Container";
-import { createText } from "@shopify/restyle";
-import { Theme } from "@/constants/theme";
-
-const Text = createText<Theme>();
+import { Text } from "@/components/ui";
 
 export default function NewScreen() {
   return (

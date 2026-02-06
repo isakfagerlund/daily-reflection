@@ -1,9 +1,5 @@
-import { Theme } from "@/constants/theme";
-import { createBox, createText } from "@shopify/restyle";
+import { Box, Text } from "@/components/ui";
 import { format } from "date-fns";
-
-const Box = createBox<Theme>();
-const Text = createText<Theme>();
 
 export const Reflection = ({
   reflection,

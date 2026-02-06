@@ -5,7 +5,7 @@ import { useColorScheme } from 'react-native';
 import { ThemedText } from '../ThemedText';
 
 jest.mock('react-native', () => {
-  const actual = jest.requireMock('react-native');
+  const actual = jest.requireActual('react-native/jest/mock');
   return {
     ...actual,
     useColorScheme: jest.fn(),

@@ -1,21 +1,13 @@
 import * as React from 'react';
 import renderer, { act } from 'react-test-renderer';
-import { useColorScheme } from 'react-native';
+import * as ReactNative from 'react-native';
 
 import { ThemedText } from '../ThemedText';
 
-jest.mock('react-native', () => {
-  const actual = jest.requireActual('react-native/jest/mock');
-  return {
-    ...actual,
-    useColorScheme: jest.fn(),
-  };
-});
-
-const mockedUseColorScheme = useColorScheme as jest.Mock;
+const useColorSchemeSpy = jest.spyOn(ReactNative, 'useColorScheme');
 
 beforeEach(() => {
-  mockedUseColorScheme.mockReturnValue('light');
+  useColorSchemeSpy.mockReturnValue('light');
 });
 
 it(`renders correctly`, () => {

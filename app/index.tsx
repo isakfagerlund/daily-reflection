@@ -2,21 +2,17 @@ import { Container } from "@/components/Container";
 import { Reflection } from "@/components/Reflection";
 import { FloatingBottomBar } from "@/components/FloatingBottomBar";
 import { Box, Text } from "@/components/ui";
-import { currentReflectionInput } from "@/atoms/atoms";
 import { createReflection, type Reflection as ReflectionModel } from "@/database/reflections";
 import { useAddReflection, useReflections } from "@/features/reflections/queries";
 import { FlashList } from "@shopify/flash-list";
-import { useAtom } from "jotai";
 import { FlatList, Platform, StyleSheet } from "react-native";
 
 export default function HomeScreen() {
   const { data } = useReflections();
   const addReflectionMutation = useAddReflection();
-  const [, setReflection] = useAtom(currentReflectionInput);
   const reflections = data ?? [];
 
   const handleSubmit = (currentReflection: string) => {
-    setReflection(currentReflection);
     addReflectionMutation.mutate(createReflection(currentReflection));
   };
 

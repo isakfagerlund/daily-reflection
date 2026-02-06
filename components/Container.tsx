@@ -1,9 +1,5 @@
-import { createBox } from "@shopify/restyle";
-import theme, { Theme } from "@/constants/theme";
 import { ReactNode } from "react";
-import { Platform } from "react-native";
-
-const Box = createBox<Theme>();
+import { Box } from "@/components/ui";
 
 interface ContainerProps {
   children: ReactNode;

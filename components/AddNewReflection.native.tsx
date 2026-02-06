@@ -42,9 +42,9 @@ export const AddNewReflection = ({
       </Button>
 
       <TrueSheet
-        blurTint="prominent"
+        backgroundBlur="prominent"
         ref={sheet}
-        sizes={["auto", "large"]}
+        detents={["auto", 1]}
         cornerRadius={24}
       >
         <NewReflectionContent

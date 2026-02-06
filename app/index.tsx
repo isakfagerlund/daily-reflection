@@ -1,40 +1,22 @@
 import { Container } from "@/components/Container";
-import { createBox, createText } from "@shopify/restyle";
-import { Theme } from "@/constants/theme";
 import { Reflection } from "@/components/Reflection";
-import { useAtom } from "jotai";
-import { currentReflectionInput } from "@/atoms/atoms";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { addReflection, getReflections } from "@/database/reflections";
-import { FlashList } from "@shopify/flash-list";
-import { StyleSheet } from "react-native";
-import { easeGradient } from "react-native-easing-gradient";
 import { FloatingBottomBar } from "@/components/FloatingBottomBar";
-import { BlurView } from "expo-blur";
-
-const Box = createBox<Theme>();
-const Text = createText<Theme>();
+import { Box, Text } from "@/components/ui";
+import { currentReflectionInput } from "@/atoms/atoms";
+import { createReflection } from "@/database/reflections";
+import { useAddReflection, useReflections } from "@/features/reflections/queries";
+import { FlashList } from "@shopify/flash-list";
+import { useAtom } from "jotai";
+import { StyleSheet } from "react-native";
 
 export default function HomeScreen() {
-  const queryClient = useQueryClient();
-  const { data } = useQuery({
-    queryKey: ["reflections"],
-    queryFn: getReflections,
-  });
-  const { mutate } = useMutation({
-    mutationFn: addReflection,
-    onSuccess: () => queryClient.fetchQuery({ queryKey: ["reflections"] }),
-  });
+  const { data } = useReflections();
+  const addReflectionMutation = useAddReflection();
   const [, setReflection] = useAtom(currentReflectionInput);
 
   const handleSubmit = (currentReflection: string) => {
     setReflection(currentReflection);
-    mutate({
-      id: new Date().getTime(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      reflection: currentReflection,
-    });
+    addReflectionMutation.mutate(createReflection(currentReflection));
   };
 
   return (
@@ -59,9 +41,7 @@ export default function HomeScreen() {
           >
             <FlashList
               showsVerticalScrollIndicator={false}
-              data={data?.sort(
-                (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
-              )}
+              data={data ?? []}
               renderItem={({ item }) => (
                 <Reflection
                   reflection={item.reflection}

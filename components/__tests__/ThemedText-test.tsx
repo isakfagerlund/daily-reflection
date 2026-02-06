@@ -1,16 +1,10 @@
 import * as React from 'react';
 import renderer, { act } from 'react-test-renderer';
-import { useColorScheme } from 'react-native';
+import useColorScheme from 'react-native/Libraries/Utilities/useColorScheme';
 
 import { ThemedText } from '../ThemedText';
 
-jest.mock('react-native', () => {
-  const actual = jest.requireActual('react-native');
-  return {
-    ...actual,
-    useColorScheme: jest.fn(),
-  };
-});
+jest.mock('react-native/Libraries/Utilities/useColorScheme', () => jest.fn());
 
 const mockedUseColorScheme = useColorScheme as jest.Mock;
 

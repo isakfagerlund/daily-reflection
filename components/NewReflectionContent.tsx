@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import { useAtom } from "jotai";
 import { currentReflectionInput } from "@/atoms/atoms";
-import { useState } from "react";
+import { useCallback } from "react";
 
 const TextInput = createBox<Theme, React.ComponentProps<typeof RNTextInput>>(
   RNTextInput,
@@ -21,13 +21,48 @@ export const NewReflectionContent = ({
 }: {
   handleSubmit: (value: string) => void;
 }) => {
-  const [currentReflection] = useAtom(currentReflectionInput);
-  const [textInput, setTextInput] = useState(currentReflection);
+  const [textInput, setTextInput] = useAtom(currentReflectionInput);
+
+  const submitReflection = useCallback(() => {
+    const trimmedReflection = textInput.trim();
+
+    if (!trimmedReflection) {
+      return;
+    }
+
+    handleSubmit(trimmedReflection);
+    setTextInput("");
+  }, [handleSubmit, setTextInput, textInput]);
+
+  const handleKeyPress = useCallback(
+    (event: {
+      nativeEvent: { key: string; shiftKey?: boolean };
+      preventDefault?: () => void;
+    }) => {
+      if (event.nativeEvent.key !== "Enter") {
+        return;
+      }
+
+      if (!("shiftKey" in event.nativeEvent)) {
+        return;
+      }
+
+      if (event.nativeEvent.shiftKey) {
+        return;
+      }
+
+      event.preventDefault?.();
+      submitReflection();
+    },
+    [submitReflection],
+  );
 
   return (
     <Box paddingVertical="xl" padding="xl" gap="m">
       <TextInput
+        testID="reflection-input"
         onChangeText={(text) => setTextInput(text)}
+        onKeyPress={handleKeyPress}
         borderRadius={8}
         borderWidth={2}
         width="100%"
@@ -38,9 +73,8 @@ export const NewReflectionContent = ({
         height={150}
       />
       <Button
-        onPress={() => {
-          handleSubmit(textInput);
-        }}
+        testID="reflection-submit"
+        onPress={submitReflection}
         borderWidth={2}
         borderRadius={100}
         padding="s"

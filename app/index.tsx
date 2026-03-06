@@ -4,47 +4,24 @@ import { FloatingBottomBar } from "@/components/FloatingBottomBar";
 import { Box, Text } from "@/components/ui";
 import { createReflection, type Reflection as ReflectionModel } from "@/database/reflections";
 import { useAddReflection, useReflections } from "@/features/reflections/queries";
-import { debugLog } from "@/lib/debugLog";
 import { FlashList } from "@shopify/flash-list";
 import { useState } from "react";
 import { FlatList, Platform, StyleSheet } from "react-native";
 
 export default function HomeScreen() {
-  const { data, status, error } = useReflections();
+  const { data } = useReflections();
   const addReflectionMutation = useAddReflection();
   const [currentReflection, setCurrentReflection] = useState("");
   const reflections = data ?? [];
 
-  // #region agent log
-  debugLog({
-    hypothesisId: "A",
-    location: "app/index.tsx:18",
-    message: "HomeScreen render state",
-    data: {
-      platform: Platform.OS,
-      status,
-      dataLength: reflections.length,
-      hasError: Boolean(error),
-      firstId: reflections[0]?.id ?? null,
-    },
-  });
-  // #endregion
-
   const handleSubmit = (currentReflection: string) => {
-    // #region agent log
-    debugLog({
-      hypothesisId: "D",
-      location: "app/index.tsx:32",
-      message: "HomeScreen handleSubmit invoked",
-      data: {
-        platform: Platform.OS,
-        textLength: currentReflection.length,
-        mutationPending: addReflectionMutation.isPending,
+    addReflectionMutation.mutate(createReflection(currentReflection), {
+      onSuccess: () => {
+        setCurrentReflection((value) =>
+          value === currentReflection ? "" : value,
+        );
       },
     });
-    // #endregion
-    setCurrentReflection(currentReflection);
-    addReflectionMutation.mutate(createReflection(currentReflection));
   };
 
   const renderItem = ({ item }: { item: ReflectionModel }) => (

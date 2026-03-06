@@ -5,7 +5,6 @@ import {
   TextInput as RNTextInput,
   TouchableOpacity as RNButton,
 } from "react-native";
-import { debugLog } from "@/lib/debugLog";
 
 const TextInput = createBox<Theme, React.ComponentProps<typeof RNTextInput>>(
   RNTextInput,
@@ -37,20 +36,7 @@ export const NewReflectionContent = ({
         height={150}
       />
       <Button
-        onPress={() => {
-          // #region agent log
-          debugLog({
-            hypothesisId: "D",
-            location: "components/NewReflectionContent.tsx:44",
-            message: "Submit button pressed",
-            data: {
-              textLength: currentReflection.length,
-              isEmpty: currentReflection.length === 0,
-            },
-          });
-          // #endregion
-          handleSubmit(currentReflection);
-        }}
+        onPress={() => handleSubmit(currentReflection)}
         borderWidth={2}
         borderRadius={100}
         padding="s"

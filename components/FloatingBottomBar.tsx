@@ -14,9 +14,13 @@ const { colors, locations } = easeGradient({
 });
 
 export const FloatingBottomBar = ({
+  currentReflection,
   handleSubmit,
+  setCurrentReflection,
 }: {
+  currentReflection: string;
   handleSubmit: (value: string) => void;
+  setCurrentReflection: (value: string) => void;
 }) => {
   return (
     <MaskedView
@@ -38,7 +42,11 @@ export const FloatingBottomBar = ({
           alignItems: "center",
         }}
       >
-        <AddNewReflection handleSubmit={handleSubmit} />
+        <AddNewReflection
+          currentReflection={currentReflection}
+          handleSubmit={handleSubmit}
+          setCurrentReflection={setCurrentReflection}
+        />
       </BlurView>
     </MaskedView>
   );

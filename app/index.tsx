@@ -2,21 +2,48 @@ import { Container } from "@/components/Container";
 import { Reflection } from "@/components/Reflection";
 import { FloatingBottomBar } from "@/components/FloatingBottomBar";
 import { Box, Text } from "@/components/ui";
-import { currentReflectionInput } from "@/atoms/atoms";
 import { createReflection, type Reflection as ReflectionModel } from "@/database/reflections";
 import { useAddReflection, useReflections } from "@/features/reflections/queries";
+import { debugLog } from "@/lib/debugLog";
 import { FlashList } from "@shopify/flash-list";
-import { useAtom } from "jotai";
+import { useState } from "react";
 import { FlatList, Platform, StyleSheet } from "react-native";
 
 export default function HomeScreen() {
-  const { data } = useReflections();
+  const { data, status, error } = useReflections();
   const addReflectionMutation = useAddReflection();
-  const [, setReflection] = useAtom(currentReflectionInput);
+  const [currentReflection, setCurrentReflection] = useState("");
   const reflections = data ?? [];
 
+  // #region agent log
+  debugLog({
+    hypothesisId: "A",
+    location: "app/index.tsx:18",
+    message: "HomeScreen render state",
+    data: {
+      platform: Platform.OS,
+      status,
+      dataLength: reflections.length,
+      hasError: Boolean(error),
+      firstId: reflections[0]?.id ?? null,
+    },
+  });
+  // #endregion
+
   const handleSubmit = (currentReflection: string) => {
-    setReflection(currentReflection);
+    // #region agent log
+    debugLog({
+      hypothesisId: "D",
+      location: "app/index.tsx:32",
+      message: "HomeScreen handleSubmit invoked",
+      data: {
+        platform: Platform.OS,
+        textLength: currentReflection.length,
+        mutationPending: addReflectionMutation.isPending,
+      },
+    });
+    // #endregion
+    setCurrentReflection(currentReflection);
     addReflectionMutation.mutate(createReflection(currentReflection));
   };
 
@@ -69,7 +96,11 @@ export default function HomeScreen() {
               />
             )}
           </Box>
-          <FloatingBottomBar handleSubmit={handleSubmit} />
+          <FloatingBottomBar
+            currentReflection={currentReflection}
+            handleSubmit={handleSubmit}
+            setCurrentReflection={setCurrentReflection}
+          />
         </Box>
       </Box>
     </Container>

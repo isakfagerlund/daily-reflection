@@ -12,9 +12,13 @@ const Button = createBox<Theme, React.ComponentProps<typeof RNButton>>(
 );
 
 export const AddNewReflection = ({
+  currentReflection,
   handleSubmit,
+  setCurrentReflection,
 }: {
+  currentReflection: string;
   handleSubmit: (currentReflection: string) => void;
+  setCurrentReflection: (value: string) => void;
 }) => {
   const sheet = useRef<TrueSheet>(null);
 
@@ -48,10 +52,12 @@ export const AddNewReflection = ({
         cornerRadius={24}
       >
         <NewReflectionContent
+          currentReflection={currentReflection}
           handleSubmit={(text: string) => {
             handleSubmit(text);
             dismiss();
           }}
+          setCurrentReflection={setCurrentReflection}
         />
       </TrueSheet>
     </React.Fragment>

@@ -5,9 +5,6 @@ import {
   TextInput as RNTextInput,
   TouchableOpacity as RNButton,
 } from "react-native";
-import { useAtom } from "jotai";
-import { currentReflectionInput } from "@/atoms/atoms";
-import { useState } from "react";
 
 const TextInput = createBox<Theme, React.ComponentProps<typeof RNTextInput>>(
   RNTextInput,
@@ -17,30 +14,29 @@ const Button = createBox<Theme, React.ComponentProps<typeof RNButton>>(
 );
 
 export const NewReflectionContent = ({
+  currentReflection,
   handleSubmit,
+  setCurrentReflection,
 }: {
+  currentReflection: string;
   handleSubmit: (value: string) => void;
+  setCurrentReflection: (value: string) => void;
 }) => {
-  const [currentReflection] = useAtom(currentReflectionInput);
-  const [textInput, setTextInput] = useState(currentReflection);
-
   return (
     <Box paddingVertical="xl" padding="xl" gap="m">
       <TextInput
-        onChangeText={(text) => setTextInput(text)}
+        onChangeText={setCurrentReflection}
         borderRadius={8}
         borderWidth={2}
         width="100%"
         padding="s"
         multiline={true}
-        value={textInput}
+        value={currentReflection}
         textAlignVertical="top"
         height={150}
       />
       <Button
-        onPress={() => {
-          handleSubmit(textInput);
-        }}
+        onPress={() => handleSubmit(currentReflection)}
         borderWidth={2}
         borderRadius={100}
         padding="s"

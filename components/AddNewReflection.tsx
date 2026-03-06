@@ -12,9 +12,13 @@ const Button = createBox<Theme, React.ComponentProps<typeof RNButton>>(
 );
 
 export const AddNewReflection = ({
+  currentReflection,
   handleSubmit,
+  setCurrentReflection,
 }: {
+  currentReflection: string;
   handleSubmit: (currentReflection: string) => void;
+  setCurrentReflection: (value: string) => void;
 }) => {
   return (
     <React.Fragment>
@@ -30,7 +34,11 @@ export const AddNewReflection = ({
         >
           <PlusIcon />
         </Button>
-        <NewReflectionContent handleSubmit={handleSubmit} />
+        <NewReflectionContent
+          currentReflection={currentReflection}
+          handleSubmit={handleSubmit}
+          setCurrentReflection={setCurrentReflection}
+        />
       </Box>
     </React.Fragment>
   );
